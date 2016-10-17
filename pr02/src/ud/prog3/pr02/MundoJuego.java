@@ -116,12 +116,12 @@ public class MundoJuego {
 	}
 	
 	/**
-	 * TODO: Comentar 
-	 * @param masa
-	 * @param coefRozSuelo
-	 * @param coefRozAire
-	 * @param vel
-	 * @return
+	 * Método que calcula la fuerza de rozamiento del suelo y del aire
+	 * @param masa La masa para calcular el rozamiento
+	 * @param coefRozSuelo El coeficiente de rozamiento del suelo
+	 * @param coefRozAire El coeficiente de rozamiento del aire
+	 * @param vel La velocidad actual
+	 * @return La fuerza total de rozamiento
 	 */
 	
 	public static double calcFuerzaRozamiento(double masa, double coefRozSuelo, double coefRozAire, double vel){
@@ -130,9 +130,9 @@ public class MundoJuego {
 		  return fuerzaRozamientoAire + fuerzaRozamientoSuelo; 
 	}
 	/**
-	 * TODO: Comentar
-	 * @param fuerza
-	 * @param masa
+	 * Devuelve la aceleración actual conociendo la fuerza y la masa
+	 * @param fuerza La fuerza
+	 * @param masa La masa
 	 * @return
 	 */
 	 public static double calcAceleracionConFuerza( double fuerza, double masa ) {
@@ -141,9 +141,9 @@ public class MundoJuego {
 	 }
 	 
 	/**
-	 * TODO: Comentar 
-	 * @param fuerza
-	 * @param coche
+	 * Método que aplica fuerza al coche
+	 * @param fuerza La fuerza a aplicar (si no la hay se aplicará la de rozamiento únicamente)
+	 * @param coche El coche al que se le aplica la fuerza
 	 */
 	public static void aplicarFuerza(double fuerza, Coche coche) {
 		double fuerzaRozamiento = calcFuerzaRozamiento(Coche.MASA, Coche.COEF_RZTO_SUELO, Coche.COEF_RZTO_AIRE, coche.getVelocidad());

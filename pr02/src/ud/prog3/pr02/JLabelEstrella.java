@@ -16,7 +16,7 @@ public class JLabelEstrella extends JLabel {
 	private static final boolean DIBUJAR_ESFERA_ESTRELLA = false;  // Dibujado (para depuración) del bounding circle de choque la estrella
 	private long tCreacion;
 	
-	/** Construye y devuelve el JLabel de la estrella con su gr�fico y tama�o
+	/** Construye y devuelve el JLabel de la estrella con su gráfico y tamaño
 	 */
 	public JLabelEstrella() {
 		try {
@@ -26,8 +26,6 @@ public class JLabelEstrella extends JLabel {
 			e.printStackTrace();
 		}
 		setBounds( 0, 0, TAMANYO_ESTRELLA, TAMANYO_ESTRELLA);
-		// Esto ser�a �til cuando hay alg�n problema con el gr�fico: borde de color del JLabel
-		// setBorder( BorderFactory.createLineBorder( Color.yellow, 4 ));
 		this.tCreacion = System.currentTimeMillis();
 	}
 	
@@ -39,29 +37,30 @@ public class JLabelEstrella extends JLabel {
 	 * 						positivo en sentido antihorario, negativo horario.
 	 */
 	public void setGiro( double gradosGiro ) {
-		// De grados a radianes...
 		miGiro = gradosGiro/180*Math.PI;
-		// El giro en la pantalla es en sentido horario (inverso):
 		miGiro = -miGiro;  // Cambio el sentido del giro
-		// Y el gr�fico del ESTRELLA apunta hacia arriba (en lugar de derecha OX)
-		miGiro = miGiro + Math.PI/2; // Sumo 90� para que corresponda al origen OX
+		miGiro = miGiro + Math.PI/2; 
 	}
 
+	/**
+	 * Añade grados al giro actual de la estrella
+	 * @param grados Grados a añadir
+	 */
 	public void girar(double grados){
 		miGiro = miGiro+(grados/180*Math.PI);
 	}
 	
-	// Redefinici�n del paintComponent para que se escale y se rote el gr�fico
+	// Redefinición del paintComponent para que se escale y se rote el gráfico
 	@Override
 	protected void paintComponent(Graphics g) {
 //		super.paintComponent(g);   // En este caso no nos sirve el pintado normal de un JLabel
 		Image img = ((ImageIcon)getIcon()).getImage();
 		Graphics2D g2 = (Graphics2D) g;  // El Graphics realmente es Graphics2D
-		// Escalado m�s fino con estos 3 par�metros:
+		// Escalado más fino con estos 3 parámetros:
 		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g2.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
-		// Prepara rotaci�n (siguientes operaciones se rotar�n)
+		// Prepara rotación (siguientes operaciones se rotarán)
         g2.rotate( miGiro, TAMANYO_ESTRELLA/2, TAMANYO_ESTRELLA/2 ); // getIcon().getIconWidth()/2, getIcon().getIconHeight()/2 );
         // Dibujado de la imagen
         g2.drawImage( img, 0, 0, TAMANYO_ESTRELLA, TAMANYO_ESTRELLA, null );

@@ -106,7 +106,7 @@ public class Coche {
 	@Override
 	public String toString() {
 		return piloto + " (" + posX + "," + posY + ") - " +
-			   "Velocidad: " + miVelocidad + " ## Direcci�n: " + miDireccionActual; 
+			   "Velocidad: " + miVelocidad + " ## Dirección: " + miDireccionActual; 
 	}
 	
 	 /** Devuelve la fuerza de aceleración del coche, de acuerdo al motor definido en la práctica 2

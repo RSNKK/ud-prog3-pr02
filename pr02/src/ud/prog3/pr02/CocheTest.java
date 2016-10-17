@@ -15,7 +15,7 @@ public class CocheTest {
 	}
 	
 	@Test
-	public void testFuerzaAceleracionAtras(){
+	public void testFuerzaAceleracionAtras(){ //Esto es copy-paste
 	    double[] tablaVel = { -500, -425, -300, -250, -200, -100, 0, 125, 250, 500, 1100 };
 	    double[] tablaFuerza = { 0, 0.5, 1, 1, 1, 0.65, 0.3, 0.575, 0.85, 0.85, 0.85 };
 	    for (int i = 0; i < tablaVel.length; i++){
@@ -25,7 +25,7 @@ public class CocheTest {
 	}
 	
 	@Test
-	public void testFuerzaAceleracionAdelante(){
+	public void testFuerzaAceleracionAdelante(){//Esto no
 	    double[] tablaVel = { -500, -425, -300, -250, -200, -75, 0, 125, 250, 500, 1000 };
 	    double[] tablaFuerza = { 1, 1, 1, 1, 1, 0.75, 0.5, 0.75, 1, 1, 0 };
 	    for (int i = 0; i < tablaVel.length; i++){
