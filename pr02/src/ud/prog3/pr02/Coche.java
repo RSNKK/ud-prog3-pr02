@@ -1,14 +1,19 @@
 package ud.prog3.pr02;
 
-/** Clase para definir instancias lógicas de coches con posición, dirección y velocidad.
- * @author Andoni Eguíluz
- * Facultad de Ingeniería - Universidad de Deusto (2014)
+/** Clase para definir instancias lï¿½gicas de coches con posiciï¿½n, direcciï¿½n y velocidad.
+ * @author Andoni Eguï¿½luz
+ * Facultad de Ingenierï¿½a - Universidad de Deusto (2014)
  */
 public class Coche {
+	public static final double MASA = 1.0;
+	public static final double FUERZA_BASE_ADELANTE = 2000.0;
+	public static final double FUERZA_BASE_ATRAS = 1000.0;
+	public static final double COEF_RZTO_SUELO = 15.5;
+	public static final double COEF_RZTO_AIRE = 0.35;
 	protected double miVelocidad;  // Velocidad en pixels/segundo
-	protected double miDireccionActual;  // Dirección en la que estoy mirando en grados (de 0 a 360)
-	protected double posX;  // Posición en X (horizontal)
-	protected double posY;  // Posición en Y (vertical)
+	protected double miDireccionActual;  // Direcciï¿½n en la que estoy mirando en grados (de 0 a 360)
+	protected double posX;  // Posiciï¿½n en X (horizontal)
+	protected double posY;  // Posiciï¿½n en Y (vertical)
 	protected String piloto;  // Nombre de piloto
 	
 	// Constructores
@@ -20,7 +25,7 @@ public class Coche {
 		posY = 300;
 	}
 	
-	/** Devuelve la velocidad actual del coche en píxeles por segundo
+	/** Devuelve la velocidad actual del coche en pï¿½xeles por segundo
 	 * @return	velocidad
 	 */
 	public double getVelocidad() {
@@ -82,15 +87,15 @@ public class Coche {
 		miVelocidad = MundoJuego.calcVelocidadConAceleracion( miVelocidad, aceleracion, tiempo );
 	}
 	
-	/** Cambia la dirección actual del coche
-	 * @param giro	Angulo de giro a sumar o restar de la dirección actual, en grados (-180 a +180)
+	/** Cambia la direcciï¿½n actual del coche
+	 * @param giro	Angulo de giro a sumar o restar de la direcciï¿½n actual, en grados (-180 a +180)
 	 * 				Considerando positivo giro antihorario, negativo giro horario
 	 */
 	public void gira( double giro ) {
 		setDireccionActual( miDireccionActual + giro );
 	}
 	
-	/** Cambia la posición del coche dependiendo de su velocidad y dirección
+	/** Cambia la posiciï¿½n del coche dependiendo de su velocidad y direcciï¿½n
 	 * @param tiempoDeMovimiento	Tiempo transcurrido, en segundos
 	 */
 	public void mueve( double tiempoDeMovimiento ) {
@@ -101,6 +106,40 @@ public class Coche {
 	@Override
 	public String toString() {
 		return piloto + " (" + posX + "," + posY + ") - " +
-			   "Velocidad: " + miVelocidad + " ## Dirección: " + miDireccionActual; 
+			   "Velocidad: " + miVelocidad + " ## Direcciï¿½n: " + miDireccionActual; 
 	}
+	
+	 /** Devuelve la fuerza de aceleraciÃ³n del coche, de acuerdo al motor definido en la prÃ¡ctica 2
+	  * @return Fuerza de aceleraciÃ³n en Newtixels   
+	  */  
+	public double fuerzaAceleracionAdelante() {
+		if (miVelocidad<=-150) return FUERZA_BASE_ADELANTE;
+		else if (miVelocidad<=0)
+			return FUERZA_BASE_ADELANTE*(-miVelocidad/150*0.5+0.5);
+		else if (miVelocidad<=250)
+			return FUERZA_BASE_ADELANTE*(miVelocidad/250*0.5+0.5);
+		else if (miVelocidad<=750)
+			return FUERZA_BASE_ADELANTE;
+		else return FUERZA_BASE_ADELANTE*(-(miVelocidad-1000)/250);
+	}
+	
+	 /** Devuelve la fuerza de aceleraciÃ³n del coche, de acuerdo al motor definido en la prÃ¡ctica 2
+	  * @return Fuerza de aceleraciÃ³n en Newtixels   
+	  */  
+	  
+	  public double fuerzaAceleracionAtras(){
+	    if (this.miVelocidad <= -350) {
+	      return FUERZA_BASE_ATRAS * ((this.miVelocidad + 500) / 150);
+	    }
+	    if (this.miVelocidad <= -200) {
+	      return FUERZA_BASE_ATRAS;
+	    }
+	    if (this.miVelocidad <= 0) {
+	      return FUERZA_BASE_ATRAS * (-this.miVelocidad / 200* 0.7 + 0.3);
+	    }
+	    if (this.miVelocidad <= 250) {
+	      return FUERZA_BASE_ATRAS * (this.miVelocidad / 250* 0.55 + 0.3);
+	    }
+	    return 850;
+	  }
 }

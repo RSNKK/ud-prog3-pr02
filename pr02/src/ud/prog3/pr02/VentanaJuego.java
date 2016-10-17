@@ -6,97 +6,92 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-/** Clase principal de minijuego de coche para Práctica 02 - Prog III
+/** Clase principal de minijuego de coche para Prï¿½ctica 02 - Prog III
  * Ventana del minijuego.
- * @author Andoni Eguíluz
- * Facultad de Ingeniería - Universidad de Deusto (2014)
+ * @author Andoni Eguï¿½luz
+ * Facultad de Ingenierï¿½a - Universidad de Deusto (2014)
  */
 public class VentanaJuego extends JFrame {
-	private static final long serialVersionUID = 1L;  // Para serialización
+	private static final long serialVersionUID = 1L;  // Para serializaciï¿½n
 	JPanel pPrincipal;         // Panel del juego (layout nulo)
 	MundoJuego miMundo;        // Mundo del juego
 	CocheJuego miCoche;        // Coche del juego
 	MiRunnable miHilo = null;  // Hilo del bucle principal de juego	
+	boolean[] bMov = new boolean[4]; //Array de booleanos para el movimiento
+	int punt = 0; //PuntuaciÃ³n
+	int perd = 0; //Estrellas perdidas
+	JLabel lMensaje;
 
 	/** Constructor de la ventana de juego. Crea y devuelve la ventana inicializada
 	 * sin coches dentro
 	 */
 	public VentanaJuego() {
-		// Liberación de la ventana por defecto al cerrar
+		// LiberaciÃ³n de la ventana por defecto al cerrar
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-		// Creación contenedores y componentes
+		// CreaciÃ³n contenedores y componentes
 		pPrincipal = new JPanel();
-		JPanel pBotonera = new JPanel();
-		JButton bAcelerar = new JButton( "Acelera" );
-		JButton bFrenar = new JButton( "Frena" );
-		JButton bGiraIzq = new JButton( "Gira Izq." );
-		JButton bGiraDer = new JButton( "Gira Der." );
+
 		// Formato y layouts
 		pPrincipal.setLayout( null );
 		pPrincipal.setBackground( Color.white );
-		// Añadido de componentes a contenedores
+		// AÃ±adido de componentes a contenedores
 		add( pPrincipal, BorderLayout.CENTER );
-		pBotonera.add( bAcelerar );
-		pBotonera.add( bFrenar );
-		pBotonera.add( bGiraIzq );
-		pBotonera.add( bGiraDer );
-		add( pBotonera, BorderLayout.SOUTH );
+		lMensaje = new JLabel("",SwingConstants.CENTER);
+		add( lMensaje, BorderLayout.SOUTH );
 		// Formato de ventana
 		setSize( 1000, 750 );
 		setResizable( false );
-		// Escuchadores de botones
-		bAcelerar.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				miCoche.acelera( +10, 1 );
-				// System.out.println( "Nueva velocidad de coche: " + miCoche.getVelocidad() );
-			}
-		});
-		bFrenar.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				miCoche.acelera( -10, 1 );
-				// System.out.println( "Nueva velocidad de coche: " + miCoche.getVelocidad() );
-			}
-		});
-		bGiraIzq.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				miCoche.gira( +10 );
-				// System.out.println( "Nueva dirección de coche: " + miCoche.getDireccionActual() );
-			}
-		});
-		bGiraDer.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				miCoche.gira( -10 );
-				// System.out.println( "Nueva dirección de coche: " + miCoche.getDireccionActual() );
-			}
-		});
+
 		
-		// Añadido para que también se gestione por teclado con el KeyListener
+		// AÃ±adido para que tambiÃ©n se gestione por teclado con el KeyListener
 		pPrincipal.addKeyListener( new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_UP: {
-						miCoche.acelera( +5, 1 );
+						bMov[0] = true;
+//						miCoche.acelera( +5, 1 );
 						break;
 					}
 					case KeyEvent.VK_DOWN: {
-						miCoche.acelera( -5, 1 );
+						bMov[1] = true;
+//						miCoche.acelera( -5, 1 );
 						break;
 					}
 					case KeyEvent.VK_LEFT: {
-						miCoche.gira( +10 );
+						bMov[2] = true;
+//						miCoche.gira( +10 );
 						break;
 					}
 					case KeyEvent.VK_RIGHT: {
-						miCoche.gira( -10 );
+						bMov[3] = true;
+//						miCoche.gira( -10 );
 						break;
 					}
 				}
 			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				switch (e.getKeyCode()) {
+					case KeyEvent.VK_UP: {
+						bMov[0] = false;
+						break;
+					}
+					case KeyEvent.VK_DOWN: {
+						bMov[1] = false;
+						break;
+					}
+					case KeyEvent.VK_LEFT: {
+						bMov[2] = false;
+						break;
+					}
+					case KeyEvent.VK_RIGHT: {
+						bMov[3] = false;
+						break;
+					}
+				}
+			}	
 		});
 		pPrincipal.setFocusable(true);
 		pPrincipal.requestFocus();
@@ -141,9 +136,9 @@ public class VentanaJuego extends JFrame {
 		}
 	}
 	
-	/** Clase interna para implementación de bucle principal del juego como un hilo
-	 * @author Andoni Eguíluz
-	 * Facultad de Ingeniería - Universidad de Deusto (2014)
+	/** Clase interna para implementaciï¿½n de bucle principal del juego como un hilo
+	 * @author Andoni Eguï¿½luz
+	 * Facultad de Ingenierï¿½a - Universidad de Deusto (2014)
 	 */
 	class MiRunnable implements Runnable {
 		boolean sigo = true;
@@ -151,14 +146,36 @@ public class VentanaJuego extends JFrame {
 		public void run() {
 			// Bucle principal forever hasta que se pare el juego...
 			while (sigo) {
+				//Control del movimiento
+				double fuerza = 0;
+				if(bMov[0])
+					fuerza = miCoche.fuerzaAceleracionAdelante();
+				if(bMov[1])
+					fuerza = -miCoche.fuerzaAceleracionAtras();
+				if(bMov[2])
+					miCoche.gira(+10);
+				if(bMov[3])
+					miCoche.gira(-10);
+				
+				MundoJuego.aplicarFuerza(fuerza, miCoche);
 				// Mover coche
 				miCoche.mueve( 0.040 );
 				// Chequear choques
-				// (se comprueba tanto X como Y porque podría a la vez chocar en las dos direcciones (esquinas)
+				// (se comprueba tanto X como Y porque podrÃ­a a la vez chocar en las dos direcciones (esquinas)
 				if (miMundo.hayChoqueHorizontal(miCoche)) // Espejo horizontal si choca en X
 					miMundo.rebotaHorizontal(miCoche);
 				if (miMundo.hayChoqueVertical(miCoche)) // Espejo vertical si choca en Y
 					miMundo.rebotaVertical(miCoche);
+				
+				miMundo.creaEstrella();
+				perd += miMundo.quitaYRotaEstrellas(6000);
+				punt += 5*miMundo.choquesConEstrellas();
+				lMensaje.setText("PuntuaciÃ³n: " + punt + " Estrellas perdidas: "+perd);
+				//Fin de la partida
+				if(perd >= 10){
+					lMensaje.setText("Â¡Fin de la partida! PuntuaciÃ³n: " +punt);
+					acaba();
+				}
 				// Dormir el hilo 40 milisegundos
 				try {
 					Thread.sleep( 40 );
